@@ -4,15 +4,20 @@ using UnityEngine;
 
 namespace LearnProject
 {
-    public class Shield : MonoBehaviour
+    public class Shield : MonoBehaviour,ITakeDamage
     {
-        [SerializeField] private float _durablity = 10f;
-        public void Init(float durablity)
+        [SerializeField] private int _durablity = 25; //прочка щита
+        public void Init(int durablity)
         {
             durablity = _durablity;
-            Destroy(gameObject, 3f);
+            //Destroy(gameObject, 20f); для пропадания через время
         }
 
-
+        public void Hit(int damage)
+        {
+            _durablity -= damage;//вычитаем из прочки щита полученный урон
+            if (_durablity <= 0) //когда прочка меньше или равно 0
+                Destroy(gameObject, 1f);// убраем щит через сек
+        }
     }
 }
