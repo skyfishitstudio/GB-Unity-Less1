@@ -644,6 +644,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
+  _bulletPrefab: {fileID: 9120117732456215829, guid: 51a633fbe11add446b39248f3b8cb155,
+    type: 3}
+  _spawnPositionBullet: {fileID: 9015855174999600583}
   _durablity: 10
 --- !u!1 &6950211739318762913
 GameObject:
