@@ -82,7 +82,7 @@ namespace LearnProject
             {
                 var bulletObj = Instantiate(_bulletPrefab, spawnPositionBullet.position, spawnPositionBullet.rotation);//спаун пули
                 var bullet = bulletObj.GetComponent<Bullet>();//поиск скрипта пули для задания парамеров пули
-                bullet.Init(spawnPositionBullet, 30f, 1f); //параметры :пуля летит в сторону поворота игрока со скоростью 1f
+                bullet.Init(spawnPositionBullet,10f,3f); //параметры :пуля летит в сторону поворота игрока со скоростью 3f
                 PlayerManager.playerAmmo--;
             }
             else

@@ -6,15 +6,17 @@ namespace LearnProject
 {
     public class Bullet : MonoBehaviour
     {
-        [SerializeField] private int _damage = 3; //наносимый урон
+        [SerializeField] private int _damage = 10; //наносимый урон
         private Transform _target;
-        private float _speed = 0.7f; //скорость пули
+        private float _speed = 2f; //скорость пули
+        private float _lifetime = 10f;//время жизни пули
 
         public void Init(Transform target, float lifetime, float speed)//префаб,время жизни, скорость
         {
             _target = target;
             _speed = speed;
-            Destroy(gameObject, lifetime);
+            _lifetime = lifetime;
+            Destroy(gameObject, _lifetime);
         }
 
         void FixedUpdate()
@@ -28,7 +30,7 @@ namespace LearnProject
             {
                 takeDamage.Hit(_damage);//наносим урон
             }
-            Destroy(gameObject, 1f); //убираем пулю
+            Destroy(gameObject); //убираем пулю сразу
         }
     }
 }
