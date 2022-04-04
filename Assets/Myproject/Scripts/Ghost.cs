@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace LearnProject
 {
@@ -13,13 +15,33 @@ namespace LearnProject
         [SerializeField] private float _enemyhealth = 50f; // здоровье призрака
         [SerializeField] private float _cooldown = 1f; // врем€ между выстрелами
         [SerializeField] private bool _IsFire;
+        [SerializeField] private UnityEvent _event;
+        //[SerializeField] private List<GameObject> _patrolPoint;
+        //[SerializeField] private List<Transform> _patrolList;
+        private Transform _pp;
+        private Rigidbody _rigidbody;
+        private Vector3 _direction;
+        //private float _speed = 2f;
+        //private float _cfSpeed = 1f;
+
+        void Awake()
+        {
+            //_patrolList = new List<Transform>(); //»нициализаци€ списка позиций маршрута патрулировани€
+            //_rigidbody = GetComponent<Rigidbody>(); // »нициализаци€ компонента физики у призрака
+            //«аполн€ем список точек патрулировани€ типа Transform из назначенных в редакторе списка GameObject
+            //foreach (GameObject nextObjPp in _patrolPoint)
+            //{
+            // _pp = nextObjPp.transform;
+            // _patrolList.Add(_pp);
+            //}
+        }
+       
         void Start()
         {
             _player = FindObjectOfType<Player>();
+           //StartCoroutine(Patrol());
         }
-
-        
-        
+                  
         public void Init(float enemyhealth,int enemylevel) //инициализаци€ здоровь€ при спауне призрака
         {
             enemyhealth = _enemyhealth;
@@ -28,17 +50,24 @@ namespace LearnProject
         }
         private void FixedUpdate()
         {
-            //ѕоворот в сторону игрока если рассто€ние меньше 4
+            Ray ray = new Ray(_spawnPositionBullet.position, transform.forward); //¬згл€д призрака на 4 единиц
+            
+            if (Physics.Raycast(ray, out RaycastHit hit, 4))
+            {
+                Debug.DrawRay(_spawnPositionBullet.position, transform.forward * hit.distance, Color.blue); //дебаг
+                if (hit.collider.CompareTag("Player")) //—трельба в сторону игрока если рассто€ние меньше 4 и есть видимость
+                {
+                    if (_IsFire)
+                        Fire();
+                }
+            }
+            //ѕоворот в сторону игрока если рассто€ние меньше 5 (имитаци€ слуха)
             if( Vector3.Distance(transform.position, _player.transform.position) < 5)
             {
                 transform.LookAt(_player.transform.position); 
             }
-            //—трельба в сторону игрока если рассто€ние меньше 2
-            if (Vector3.Distance(transform.position, _player.transform.position) < 3)
-            {
-                if(_IsFire) 
-                    Fire();
-            }
+            //ƒвижение призрака в направлении _direction
+            //Move(Time.fixedDeltaTime);
         }
         private void Fire()
         {
@@ -47,6 +76,13 @@ namespace LearnProject
             var bullet = bulletObj.GetComponent<Bullet>();//поиск скрипта пули дл€ задани€ парамеров пули
             bullet.Init(_player.transform,10f,3f); //параметры :пул€ летит в сторону игрока со скоростью 3
             Invoke(nameof(Reloading), _cooldown);
+            //_event?.Invoke();
+        }
+        private void Move(float delta)
+        {
+            //var fixetDirection = transform.TransformDirection(_direction.normalized);
+            //transform.position += fixetDirection * (_IsSprint ? speed * 3 : speed) * delta;  
+            //_rigidbody.MovePosition(transform.position + _direction.normalized * _speed * _cfSpeed * delta);
         }
 
         private void Reloading()
@@ -60,6 +96,24 @@ namespace LearnProject
             if (_enemyhealth <=0) //когда здоровье меньше или равно 0
                 Destroy(gameObject, 1f); // убраем объект со сцены через сек
         }
+        //private IEnumerator Patrol()
+        //{
+        //    Console.WriteLine("Wait start");
+        //    yield return new WaitForSeconds(5f); //пауза перед началом патрул€
+        //    Console.WriteLine("Start");
+        //    foreach (Transform nextTrnsPp in _patrolList)
+        //    {
+        //        Console.WriteLine("Wait rotate");
+        //        yield return new WaitForSeconds(5f); //пауза перед началом поворота
+        //        Console.WriteLine("Rotate");
+        //        transform.LookAt(nextTrnsPp.transform.position);
+        //        Console.WriteLine("Wait move");
+        //        yield return new WaitForSeconds(5f); //пауза перед началом движени€ по маршруту
+        //        Console.WriteLine("Move");
+        //        _direction = nextTrnsPp.transform.position;
+        //        yield return new WaitForSeconds(5f); //пауза перед продолжением движени€ по маршруту
+        //    }
+        //}
     }
 }
 

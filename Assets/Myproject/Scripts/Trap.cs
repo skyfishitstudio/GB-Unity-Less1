@@ -15,7 +15,7 @@ namespace LearnProject
         }
 
 
-        private void Move()
+        public void Move()
         {
             if (_isHide)
             {
@@ -23,9 +23,16 @@ namespace LearnProject
             }
             else
             {
-            transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+            transform.position = new Vector3(transform.position.x, -2, transform.position.z);
             }
             _isHide = !_isHide;
+        }
+        private void OnTriggerStay(Collider other)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                CancelInvoke(nameof(Move));
+            }
         }
     }
 }
