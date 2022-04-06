@@ -517,3 +517,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _durablityBomb: 1
   _damageBomb: 100
+  _radiusDamage: 3
+  _force: 200
+  explosionEffect: {fileID: 159918, guid: a0040bf7072bc2f4e82d887d50a9c5e2, type: 3}
