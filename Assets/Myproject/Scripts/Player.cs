@@ -12,7 +12,9 @@ namespace LearnProject
         [SerializeField] public Transform spawnPositionBomb;
         [SerializeField] public GameObject _bulletPrefab;
         [SerializeField] public Transform spawnPositionBullet;
+
         private Rigidbody _rb;
+        private Animator _animPlayer;
         private Vector3 _direction;
         private bool _IsSpawnShield;
         private bool _IsFire;
@@ -29,6 +31,7 @@ namespace LearnProject
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _animPlayer = GetComponent<Animator>();
         }
         void Update()
         {
@@ -65,6 +68,7 @@ namespace LearnProject
             _direction = transform.TransformDirection(_direction);
             //Поворот в сторону движения через движения мышью влево вправо с заданной скокростью поворота
             transform.Rotate(new Vector3(0,(Input.GetAxis("Mouse X")* _speedRotate * Time.deltaTime) ,0));
+            _animPlayer.SetBool("IsWalking", _direction != Vector3.zero);
         }
 
         private void SpawnBomb()
